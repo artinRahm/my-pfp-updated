@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GitHub Card with Music</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Your CSS -->
+<link rel="stylesheet" href="style.css" />
+<style>
+  /* Small styles for the music control button */
+  #music-control {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1f3434;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease;
+  }
+  #music-control:hover {
+    background-color: #162424;
+  }
+</style>
+</head>
+<body>
+
+<div class="github-profile-card" id="github-card" style="max-width: 400px; margin: 50px auto; padding: 20px; background:#172626; border-radius:12px; box-shadow: 0 0 15px #0f1c1c;">
+  <img src="" alt="Profile" class="github-avatar" id="github-avatar" style="width:120px; height:120px; border-radius: 50%; margin-bottom: 15px;" />
+  <h2 id="github-name">Loading...</h2>
+  <p class="github-username" id="github-username" style="color:#66cccc; margin-bottom: 10px;">@username</p>
+  <p class="github-bio" id="github-bio" style="font-style: italic; margin-bottom: 20px;">Loading bio...</p>
+
+  <div class="github-stats" style="display:flex; justify-content: space-around; margin-bottom: 20px;">
+    <div class="stat-box" style="text-align:center;">
+      <h3 id="github-stars">0</h3>
+      <span>Stars</span>
+    </div>
+    <div class="stat-box" style="text-align:center;">
+      <h3 id="github-repos">0</h3>
+      <span>Repos</span>
+    </div>
+    <div class="stat-box" style="text-align:center;">
+      <h3 id="github-followers">0</h3>
+      <span>Followers</span>
+    </div>
+  </div>
+
+  <a href="#" target="_blank" class="github-button" id="github-button" style="color:#66cccc; text-decoration:none; font-weight: 600;">View GitHub</a>
+
+  <!-- Audio element (hidden) -->
+  <audio id="bg-music" src="Music.mp3" loop></audio>
+
+  <!-- Play/Pause button -->
+  <button id="music-control">Play Music</button>
+</div>
+
+<script>
+const username = "artinRahm"; // Your GitHub username
+
+async function fetchGitHubData() {
+  try {
+    const res = await fetch(`https://api.github.com/users/${username}`);
+    const data = await res.json();
+
+    document.getElementById("github-avatar").src = data.avatar_url;
+    document.getElementById("github-name").textContent = data.name || data.login;
+    document.getElementById("github-username").textContent = `@${data.login}`;
+    document.getElementById("github-bio").textContent = data.bio || "No bio available.";
+    document.getElementById("github-repos").textContent = data.public_repos;
+    document.getElementById("github-followers").textContent = data.followers;
+    document.getElementById("github-button").href = data.html_url;
+
+    // Fetch repos to sum stars
+    const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+    const reposData = await reposRes.json();
+    const totalStars = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+    document.getElementById("github-stars").textContent = totalStars;
+
+  } catch (err) {
+    console.error("GitHub API error:", err);
+    document.getElementById("github-name").textContent = "Error loading GitHub";
+    document.getElementById("github-bio").textContent = "";
+  }
+}
+
+fetchGitHubData();
+
+// Music control logic
+const music = document.getElementById("bg-music");
+const controlBtn = document.getElementById("music-control");
+
+controlBtn.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+    controlBtn.textContent = "Pause Music";
+  } else {
+    music.pause();
+    controlBtn.textContent = "Play Music";
+  }
+});
+
+// Optional: Try autoplay on page load (will likely require user interaction on most browsers)
+window.addEventListener("load", () => {
+  music.play().then(() => {
+    controlBtn.textContent = "Pause Music";
+  }).catch(() => {
+    // Autoplay blocked
+    controlBtn.textContent = "Play Music";
+  });
+});
+</script>
+
+</body>
+</html>
