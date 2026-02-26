@@ -1,5 +1,3 @@
-## 📈 GitHub Stats
+## 📊 Contribution Graph
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=artinRahm&show_icons=true&theme=tokyonight)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=artinRahm&layout=compact&theme=tokyonight)
+![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=artinRahm&theme=tokyo-night&hide_border=true)
