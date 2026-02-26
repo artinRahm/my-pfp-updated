@@ -1,3 +1,3 @@
-## 📊 Contribution Graph
+## 🐍 Contribution Snake
 
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=artinRahm&theme=tokyo-night&hide_border=true)
+![Snake animation](https://github.com/artinRahm/artinRahm/blob/output/github-contribution-grid-snake.svg)
